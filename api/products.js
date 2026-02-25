@@ -1,4 +1,3 @@
-
 const SHOP = 'the-so-good-kitchen-3.myshopify.com';
 const API_VERSION = '2024-01';
 
@@ -38,7 +37,7 @@ export default async function handler(req, res) {
 
     // POST：新增產品
     if (req.method === 'POST') {
-      const { title, price, body_html, status, image_base64 } = req.body;
+      const { title, price, body_html, status, image_base64, collection_id } = req.body;
       if (!title || !price) return res.status(400).json({ error: '缺少名稱或價格' });
 
       const productPayload = {
@@ -64,6 +63,21 @@ export default async function handler(req, res) {
       });
       const data = await r.json();
       if (!data.product) return res.status(400).json({ error: JSON.stringify(data) });
+
+      // 加入指定 Collection
+      if (collection_id) {
+        await fetch(`https://${SHOP}/admin/api/${API_VERSION}/collects.json`, {
+          method: 'POST',
+          headers: { 'X-Shopify-Access-Token': token, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            collect: {
+              product_id: data.product.id,
+              collection_id: collection_id
+            }
+          })
+        });
+      }
+
       return res.status(200).json({ success: true, product: data.product });
     }
 
