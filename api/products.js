@@ -18,7 +18,7 @@ async function getAccessToken() {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -115,6 +115,18 @@ export default async function handler(req, res) {
       }
 
       return res.status(200).json({ success: true });
+    }
+
+    // DELETE：刪除產品
+    if (req.method === 'DELETE') {
+      const { id } = req.body;
+      const r = await fetch(`https://${SHOP}/admin/api/${API_VERSION}/products/${id}.json`, {
+        method: 'DELETE',
+        headers: { 'X-Shopify-Access-Token': token }
+      });
+      if (r.status === 200 || r.status === 204) return res.status(200).json({ success: true });
+      const text = await r.text();
+      return res.status(r.status).json({ error: text });
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
