@@ -1,6 +1,5 @@
 const SUPABASE_URL = 'https://lhyzkjkewcpnqdlhkgqk.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeXpramtld2NwbnFkbGhrZ3FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1MTI3OTMsImV4cCI6MjA4MjA4ODc5M30.yAYTQ26tBdvMxRMyi8H-pInZJtWl99MWwDFr9cHHZlA';
-
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeXpramtld2NwbnFkbGhrZ3FrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMTAzOTMsImV4cCI6MjA4Nzc4NjM5M30.yAYTQ26tBdvMxRMyi8H-pInZJtWl99MWwDFr9cHHZlA';
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS');
