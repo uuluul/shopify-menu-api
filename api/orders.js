@@ -36,12 +36,24 @@ export default async function handler(req, res) {
 
   if (req.method === 'PATCH') {
     try {
-      const { id, status } = req.body;
-      if (!id || !status) return res.status(400).json({ error: 'Missing id or status' });
+      const { id, status, customer_name, customer_phone, delivery_method, address_or_time, items, total, notes } = req.body;
+      if (!id) return res.status(400).json({ error: 'Missing id' });
+      
+      // 只更新有傳入的欄位
+      const updates = {};
+      if (status !== undefined) updates.status = status;
+      if (customer_name !== undefined) updates.customer_name = customer_name;
+      if (customer_phone !== undefined) updates.customer_phone = customer_phone;
+      if (delivery_method !== undefined) updates.delivery_method = delivery_method;
+      if (address_or_time !== undefined) updates.address_or_time = address_or_time;
+      if (items !== undefined) updates.items = items;
+      if (total !== undefined) updates.total = total;
+      if (notes !== undefined) updates.notes = notes;
+  
       const r = await fetch(`${SUPABASE_URL}/rest/v1/orders?id=eq.${id}`, {
         method: 'PATCH',
         headers: { ...headers, 'Prefer': 'return=representation' },
-        body: JSON.stringify({ status })
+        body: JSON.stringify(updates)
       });
       const data = await r.json();
       return res.status(200).json({ success: true, data });
